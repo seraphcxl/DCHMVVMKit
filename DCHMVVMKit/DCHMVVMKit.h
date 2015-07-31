@@ -12,5 +12,6 @@
 #import "DCHMVVMCommand.h"
 #import "DCHMVVMCommandResult.h"
 #import "DCHMVVMCommandCallbackWarpper.h"
+#import "DCHViewModel.h"
 
 #endif
