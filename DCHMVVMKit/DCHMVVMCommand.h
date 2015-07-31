@@ -15,7 +15,7 @@
 typedef void(^DCHMVVMCommandCompletion)(id content, NSError *error);
 typedef void(^DCHMVVMCommandOperation)(NSDictionary *buildinParams, NSArray *inputParams, DCHMVVMCommandCompletion completion);
 typedef void(^DCHMVVMCommandCancelation)();
-typedef void(^DCHMVVMCommandExecuteObserver)(BOOL executing, DCHMVVMCommand *command);
+typedef void(^DCHMVVMCommandExecuteObserver)(DCHMVVMCommand *command, BOOL executing);
 
 @interface DCHMVVMCommand : NSObject
 
@@ -24,14 +24,13 @@ typedef void(^DCHMVVMCommandExecuteObserver)(BOOL executing, DCHMVVMCommand *com
 @property (nonatomic, strong, readonly) DCHMVVMCommandResult *result;
 
 - (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation;
-- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback;
-- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback executeObserver:(DCHMVVMCommandExecuteObserver)executeObserver;
-- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback executeObserver:(DCHMVVMCommandExecuteObserver)executeObserver cancelation:(DCHMVVMCommandCancelation)cancelation;
+- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation cancelation:(DCHMVVMCommandCancelation)cancelation;
 
 - (void)resetBuildinParams:(NSDictionary *)newBuildinParams;
+- (void)resetCallback:(DCHMVVMCommandCallback)newCallback;
+- (void)resetExecuteObserver:(DCHMVVMCommandExecuteObserver)newExecuteObserver;
 
 - (void)cancel;
-
 - (void)syncExecute:(NSArray *)inputParams;
 - (void)asyncExecute:(NSArray *)inputParams;
 
