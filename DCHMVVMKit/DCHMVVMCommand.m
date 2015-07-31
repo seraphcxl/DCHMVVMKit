@@ -21,31 +21,23 @@
 @property (nonatomic, copy) DCHMVVMCommandCallback callback;
 @property (nonatomic, copy) DCHMVVMCommandExecuteObserver executeObserver;
 
+- (void)updateExecuting:(BOOL)executing;
+
 @end
 
 @implementation DCHMVVMCommand
 
 - (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation {
-    return [self initWithOperation:operation callback:nil];
+    return [self initWithOperation:operation cancelation:nil];
 }
 
-- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback {
-    return [self initWithOperation:operation callback:callback executeObserver:nil];
-}
-
-- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback executeObserver:(DCHMVVMCommandExecuteObserver)executeObserver {
-    return [self initWithOperation:operation callback:callback executeObserver:executeObserver cancelation:nil];
-}
-
-- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback executeObserver:(DCHMVVMCommandExecuteObserver)executeObserver cancelation:(DCHMVVMCommandCancelation)cancelation {
+- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation cancelation:(DCHMVVMCommandCancelation)cancelation {
     if (!operation) {
         return nil;
     }
     self = [self init];
     if (self) {
         self.operation = operation;
-        self.callback = callback;
-        self.executeObserver = executeObserver;
         self.cancelation = cancelation;
     }
     return self;
@@ -55,28 +47,33 @@
     self.buildinParams = newBuildinParams;
 }
 
+- (void)resetCallback:(DCHMVVMCommandCallback)newCallback {
+    self.callback = newCallback;
+}
+
+- (void)resetExecuteObserver:(DCHMVVMCommandExecuteObserver)newExecuteObserver {
+    self.executeObserver = newExecuteObserver;
+}
+
 - (void)cancel {
     if (self.cancelation) {
         self.cancelation();
     }
-    self.executing = NO;
-    if (self.executeObserver) {
-        self.executeObserver(self.executing, self);
-    }
+    [self updateExecuting:NO];
 }
 
 - (void)syncExecute:(NSArray *)inputParams {
     if (!self.executing) {
         @weakify(self)
-        self.executing = YES;
-        if (self.executeObserver) {
-            self.executeObserver(self.executing, self);
-        }
+        [self updateExecuting:YES];
         DCHMVVMCommandCompletion completion = ^(id content, NSError *error) {
-            @strongify(self)
+            @strongify(self) 
             DCHMVVMCommandResult *result = [[DCHMVVMCommandResult alloc] initWithContent:content andError:error];
             self.result = result;
-            self.executing = NO;
+            if (self.callback) {
+                self.callback(self, result);
+            }
+            [self updateExecuting:NO];
         };
         self.operation(self.buildinParams, inputParams, completion);
     }
@@ -88,6 +85,13 @@
         @strongify(self)
         [self syncExecute:inputParams];
     });
+}
+
+- (void)updateExecuting:(BOOL)executing {
+    self.executing = executing;
+    if (self.executeObserver) {
+        self.executeObserver(self, self.executing);
+    }
 }
 
 @end

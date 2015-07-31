@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class DCHMVVMCommandResult;
 @class DCHMVVMCommand;
 
-typedef void(^DCHMVVMCommandCallback)(DCHMVVMCommand *command);
+typedef void(^DCHMVVMCommandCallback)(DCHMVVMCommand *command, DCHMVVMCommandResult *result);
 
 @interface DCHMVVMCommandCallbackWarpper : NSObject
 
