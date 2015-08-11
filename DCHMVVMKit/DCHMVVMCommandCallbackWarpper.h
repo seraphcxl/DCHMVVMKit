@@ -15,6 +15,7 @@ typedef void(^DCHMVVMCommandCallback)(DCHMVVMCommand *command, DCHMVVMCommandRes
 
 @interface DCHMVVMCommandCallbackWarpper : NSObject
 
+@property (nonatomic, strong, readonly) NSString *uuid;
 @property (nonatomic, copy, readonly) DCHMVVMCommandCallback callback;
 
 - (instancetype)initWithCommandCallback:(DCHMVVMCommandCallback)callback;

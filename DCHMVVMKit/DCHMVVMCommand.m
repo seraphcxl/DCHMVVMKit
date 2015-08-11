@@ -18,7 +18,7 @@
 
 @property (nonatomic, copy) DCHMVVMCommandOperation operation;
 @property (nonatomic, copy) DCHMVVMCommandCancelation cancelation;
-@property (nonatomic, copy) DCHMVVMCommandCallback callback;
+@property (nonatomic, copy) DCHMVVMCommandCallbackQueue *callbackQueue;
 @property (nonatomic, copy) DCHMVVMCommandExecuteObserver executeObserver;
 
 - (void)updateExecuting:(BOOL)executing;
@@ -28,10 +28,14 @@
 @implementation DCHMVVMCommand
 
 - (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation {
-    return [self initWithOperation:operation cancelation:nil];
+    return [self initWithOperation:operation callback:nil];
 }
 
-- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation cancelation:(DCHMVVMCommandCancelation)cancelation {
+- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback {
+    return [self initWithOperation:operation callback:callback cancelation:nil];
+}
+
+- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback cancelation:(DCHMVVMCommandCancelation)cancelation {
     if (!operation) {
         return nil;
     }
@@ -39,6 +43,11 @@
     if (self) {
         self.operation = operation;
         self.cancelation = cancelation;
+        
+        self.callbackQueue = [[DCHMVVMCommandCallbackQueue alloc] init];
+        if (callback) {
+            [self.callbackQueue addCallback:callback];
+        }
     }
     return self;
 }
@@ -47,12 +56,37 @@
     self.buildinParams = newBuildinParams;
 }
 
-- (void)resetCallback:(DCHMVVMCommandCallback)newCallback {
-    self.callback = newCallback;
-}
-
 - (void)resetExecuteObserver:(DCHMVVMCommandExecuteObserver)newExecuteObserver {
     self.executeObserver = newExecuteObserver;
+}
+
+- (NSString *)resetCallback:(DCHMVVMCommandCallback)newCallback {
+    NSString *result = nil;
+    do {
+        self.callbackQueue = [[DCHMVVMCommandCallbackQueue alloc] init];
+        if (newCallback) {
+            result = [self.callbackQueue addCallback:newCallback];
+        }
+    } while (NO);
+    return result;
+}
+
+- (NSString *)addCallback:(DCHMVVMCommandCallback)callback {
+    NSString *result = nil;
+    do {
+        if (callback) {
+            result = [self.callbackQueue addCallback:callback];
+        }
+    } while (NO);
+    return result;
+}
+
+- (void)enumerateCallback:(DCHMVVMCommandCallbackQueueEnumeration)enumeration {
+    do {
+        if (enumeration) {
+            [self.callbackQueue enumerate:enumeration];
+        }
+    } while (NO);
 }
 
 - (void)cancel {
@@ -70,8 +104,15 @@
             @strongify(self) 
             DCHMVVMCommandResult *result = [[DCHMVVMCommandResult alloc] initWithContent:content andError:error];
             self.result = result;
-            if (self.callback) {
-                self.callback(self, result);
+            if (self.callbackQueue) {
+                [self.callbackQueue enumerate:^(DCHMVVMCommandCallbackQueue *queue, NSUInteger index, DCHMVVMCommandCallback callback) {
+                    @strongify(self)
+                    do {
+                        if (callback) {
+                            callback(self, result);
+                        }
+                    } while (NO);
+                }];
             }
             [self updateExecuting:NO];
         };
