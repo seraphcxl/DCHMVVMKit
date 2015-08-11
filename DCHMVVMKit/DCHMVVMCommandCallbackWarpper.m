@@ -8,9 +8,11 @@
 
 #import "DCHMVVMCommandCallbackWarpper.h"
 #include "DCHMVVMCommand.h"
+#import <Tourbillon/DCHTourbillon.h>
 
 @interface DCHMVVMCommandCallbackWarpper ()
 
+@property (nonatomic, strong) NSString *uuid;
 @property (nonatomic, copy) DCHMVVMCommandCallback callback;
 
 @end
@@ -23,6 +25,7 @@
     }
     self = [self init];
     if (self) {
+        self.uuid = [NSObject dch_createUUID];
         self.callback = callback;
     }
     return self;
