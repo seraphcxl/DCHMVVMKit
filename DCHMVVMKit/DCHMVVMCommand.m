@@ -9,6 +9,7 @@
 #import "DCHMVVMCommand.h"
 #import "DCHMVVMCommandResult.h"
 #import <libextobjc/EXTScope.h>
+#import <Tourbillon/DCHTourbillon.h>
 
 @interface DCHMVVMCommand ()
 
@@ -22,6 +23,7 @@
 @property (nonatomic, copy) DCHMVVMCommandExecuteObserver executeObserver;
 
 - (void)updateExecuting:(BOOL)executing;
+- (void)execute:(NSArray *)inputParams synchronous:(BOOL)sync;
 
 @end
 
@@ -96,35 +98,42 @@
     [self updateExecuting:NO];
 }
 
-- (void)syncExecute:(NSArray *)inputParams {
+- (void)execute:(NSArray *)inputParams synchronous:(BOOL)sync {
     if (!self.executing) {
         @weakify(self)
         [self updateExecuting:YES];
         DCHMVVMCommandCompletion completion = ^(id content, NSError *error) {
-            @strongify(self) 
+            @strongify(self)
             DCHMVVMCommandResult *result = [[DCHMVVMCommandResult alloc] initWithContent:content andError:error];
             self.result = result;
-            if (self.callbackQueue) {
-                [self.callbackQueue enumerate:^(DCHMVVMCommandCallbackQueue *queue, NSUInteger index, DCHMVVMCommandCallback callback) {
-                    @strongify(self)
-                    do {
-                        if (callback) {
-                            callback(self, result);
-                        }
-                    } while (NO);
-                }];
-            }
+            [NSThread dch_run:^{
+                @strongify(self)
+                if (self.callbackQueue) {
+                    [self.callbackQueue enumerate:^(DCHMVVMCommandCallbackQueue *queue, NSUInteger index, DCHMVVMCommandCallback callback) {
+                        @strongify(self)
+                        do {
+                            if (callback) {
+                                callback(self, result);
+                            }
+                        } while (NO);
+                    }];
+                }
+            } synchronous:sync];
             [self updateExecuting:NO];
         };
         self.operation(self.buildinParams, inputParams, completion);
     }
 }
 
+- (void)syncExecute:(NSArray *)inputParams {
+    [self execute:inputParams synchronous:YES];
+}
+
 - (void)asyncExecute:(NSArray *)inputParams {
     @weakify(self)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         @strongify(self)
-        [self syncExecute:inputParams];
+        [self execute:inputParams synchronous:NO];
     });
 }
 
