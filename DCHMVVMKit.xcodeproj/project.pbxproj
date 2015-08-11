@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02DAE90DB50AE0C30F0A9DFA /* libPods-DCMVVMKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7599093021732CE3A3B115FF /* libPods-DCMVVMKitDemo.a */; };
 		75486516DFE92051993C9A1D /* libPods-DCHMVVMKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F6E8A77F838EADFA23AFF92 /* libPods-DCHMVVMKit.a */; };
+		8D22C8C31B79E741002D0781 /* DCHMVVMCommandCallbackQueue.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D8046C11B79C8010099737C /* DCHMVVMCommandCallbackQueue.h */; };
 		8D554E191B69F20300F604BC /* libDCHMVVMKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D554E0D1B69F20300F604BC /* libDCHMVVMKit.a */; };
 		8D554E291B69F40F00F604BC /* DCHMVVMCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D554E281B69F40F00F604BC /* DCHMVVMCommand.m */; };
 		8D554E341B6A02EC00F604BC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D554E331B6A02EC00F604BC /* main.m */; };
@@ -53,6 +54,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				8D22C8C31B79E741002D0781 /* DCHMVVMCommandCallbackQueue.h in CopyFiles */,
 				8D6BCDF31B6B3FB0008E5DF0 /* DCHViewModel.h in CopyFiles */,
 				8DE986971B6B1DAA0039B0EA /* DCHMVVMCommandCallbackWarpper.h in CopyFiles */,
 				8D9E31EC1B6A585800FD8233 /* DCHMVVMCommand.h in CopyFiles */,
