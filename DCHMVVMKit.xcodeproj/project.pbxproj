@@ -20,6 +20,7 @@
 		8D554E4E1B6A02EC00F604BC /* DCMVVMKitDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D554E4D1B6A02EC00F604BC /* DCMVVMKitDemoTests.m */; };
 		8D6BCDF21B6B3F1F008E5DF0 /* DCHViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D6BCDF11B6B3F1F008E5DF0 /* DCHViewModel.m */; };
 		8D6BCDF31B6B3FB0008E5DF0 /* DCHViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D6BCDF01B6B3F1F008E5DF0 /* DCHViewModel.h */; };
+		8D8046C31B79C8010099737C /* DCHMVVMCommandCallbackQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8046C21B79C8010099737C /* DCHMVVMCommandCallbackQueue.m */; };
 		8D9E31EB1B6A57B600FD8233 /* DCHMVVMCommandResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D9E31EA1B6A57B600FD8233 /* DCHMVVMCommandResult.m */; };
 		8D9E31EC1B6A585800FD8233 /* DCHMVVMCommand.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D554E271B69F40F00F604BC /* DCHMVVMCommand.h */; };
 		8D9E31ED1B6A585800FD8233 /* DCHMVVMKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D554E2A1B6A023B00F604BC /* DCHMVVMKit.h */; };
@@ -87,6 +88,8 @@
 		8D554E4D1B6A02EC00F604BC /* DCMVVMKitDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DCMVVMKitDemoTests.m; sourceTree = "<group>"; };
 		8D6BCDF01B6B3F1F008E5DF0 /* DCHViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCHViewModel.h; sourceTree = "<group>"; };
 		8D6BCDF11B6B3F1F008E5DF0 /* DCHViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCHViewModel.m; sourceTree = "<group>"; };
+		8D8046C11B79C8010099737C /* DCHMVVMCommandCallbackQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCHMVVMCommandCallbackQueue.h; sourceTree = "<group>"; };
+		8D8046C21B79C8010099737C /* DCHMVVMCommandCallbackQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCHMVVMCommandCallbackQueue.m; sourceTree = "<group>"; };
 		8D9E31E91B6A57B600FD8233 /* DCHMVVMCommandResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCHMVVMCommandResult.h; sourceTree = "<group>"; };
 		8D9E31EA1B6A57B600FD8233 /* DCHMVVMCommandResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCHMVVMCommandResult.m; sourceTree = "<group>"; };
 		8D9E31F21B6A595500FD8233 /* DCHMVVMCommandCallbackWarpper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCHMVVMCommandCallbackWarpper.h; sourceTree = "<group>"; };
@@ -170,14 +173,16 @@
 			isa = PBXGroup;
 			children = (
 				8D554E2A1B6A023B00F604BC /* DCHMVVMKit.h */,
+				8D6BCDF01B6B3F1F008E5DF0 /* DCHViewModel.h */,
+				8D6BCDF11B6B3F1F008E5DF0 /* DCHViewModel.m */,
 				8D554E271B69F40F00F604BC /* DCHMVVMCommand.h */,
 				8D554E281B69F40F00F604BC /* DCHMVVMCommand.m */,
 				8D9E31E91B6A57B600FD8233 /* DCHMVVMCommandResult.h */,
 				8D9E31EA1B6A57B600FD8233 /* DCHMVVMCommandResult.m */,
 				8D9E31F21B6A595500FD8233 /* DCHMVVMCommandCallbackWarpper.h */,
 				8D9E31F31B6A595500FD8233 /* DCHMVVMCommandCallbackWarpper.m */,
-				8D6BCDF01B6B3F1F008E5DF0 /* DCHViewModel.h */,
-				8D6BCDF11B6B3F1F008E5DF0 /* DCHViewModel.m */,
+				8D8046C11B79C8010099737C /* DCHMVVMCommandCallbackQueue.h */,
+				8D8046C21B79C8010099737C /* DCHMVVMCommandCallbackQueue.m */,
 			);
 			path = DCHMVVMKit;
 			sourceTree = "<group>";
@@ -469,6 +474,7 @@
 				8D9E31F41B6A595500FD8233 /* DCHMVVMCommandCallbackWarpper.m in Sources */,
 				8D9E31EB1B6A57B600FD8233 /* DCHMVVMCommandResult.m in Sources */,
 				8D554E291B69F40F00F604BC /* DCHMVVMCommand.m in Sources */,
+				8D8046C31B79C8010099737C /* DCHMVVMCommandCallbackQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

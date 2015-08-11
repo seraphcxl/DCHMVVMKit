@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DCHMVVMCommandCallbackWarpper.h"
+#import "DCHMVVMCommandCallbackQueue.h"
 
 @class DCHMVVMCommandResult;
 @class DCHMVVMCommand;
@@ -24,11 +25,15 @@ typedef void(^DCHMVVMCommandExecuteObserver)(DCHMVVMCommand *command, BOOL execu
 @property (nonatomic, strong, readonly) DCHMVVMCommandResult *result;
 
 - (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation;
-- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation cancelation:(DCHMVVMCommandCancelation)cancelation;
+- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback;
+- (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation callback:(DCHMVVMCommandCallback)callback cancelation:(DCHMVVMCommandCancelation)cancelation;
 
 - (void)resetBuildinParams:(NSDictionary *)newBuildinParams;
-- (void)resetCallback:(DCHMVVMCommandCallback)newCallback;
 - (void)resetExecuteObserver:(DCHMVVMCommandExecuteObserver)newExecuteObserver;
+
+- (NSString *)resetCallback:(DCHMVVMCommandCallback)newCallback;
+- (NSString *)addCallback:(DCHMVVMCommandCallback)callback;
+- (void)enumerateCallback:(DCHMVVMCommandCallbackQueueEnumeration)enumeration;
 
 - (void)cancel;
 - (void)syncExecute:(NSArray *)inputParams;
