@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "DCHMVVMKit"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "A MVVM develop kit for Objective-C."
 
   s.description  = <<-DESC
