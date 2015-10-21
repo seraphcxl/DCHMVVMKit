@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSDictionary *buildinParams;
 @property (nonatomic, assign) BOOL executing;
 @property (nonatomic, strong) DCHMVVMCommandResult *result;
+@property (nonatomic, strong) id storeContent;
 
 @property (nonatomic, copy) DCHMVVMCommandOperation operation;
 @property (nonatomic, copy) DCHMVVMCommandCancelation cancelation;
@@ -23,7 +24,7 @@
 @property (nonatomic, copy) DCHMVVMCommandExecuteObserver executeObserver;
 
 - (void)updateExecuting:(BOOL)executing;
-- (void)execute:(NSArray *)inputParams synchronous:(BOOL)sync;
+- (void)execute:(NSDictionary *)inputParams synchronous:(BOOL)sync;
 
 @end
 
@@ -93,12 +94,12 @@
 
 - (void)cancel {
     if (self.cancelation) {
-        self.cancelation();
+        self.cancelation(self.storeContent);
     }
     [self updateExecuting:NO];
 }
 
-- (void)execute:(NSArray *)inputParams synchronous:(BOOL)sync {
+- (void)execute:(NSDictionary *)inputParams synchronous:(BOOL)sync {
     if (!self.executing) {
         @weakify(self)
         [self updateExecuting:YES];
@@ -121,15 +122,17 @@
             } synchronous:sync];
             [self updateExecuting:NO];
         };
-        self.operation(self.buildinParams, inputParams, completion);
+        id storeContent = nil;
+        self.operation(self.buildinParams, inputParams, &storeContent, completion);
+        self.storeContent = storeContent;
     }
 }
 
-- (void)syncExecute:(NSArray *)inputParams {
+- (void)syncExecute:(NSDictionary *)inputParams {
     [self execute:inputParams synchronous:YES];
 }
 
-- (void)asyncExecute:(NSArray *)inputParams {
+- (void)asyncExecute:(NSDictionary *)inputParams {
     @weakify(self)
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         @strongify(self)

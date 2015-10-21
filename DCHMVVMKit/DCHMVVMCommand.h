@@ -14,8 +14,8 @@
 @class DCHMVVMCommand;
 
 typedef void(^DCHMVVMCommandCompletion)(id content, NSError *error);
-typedef void(^DCHMVVMCommandOperation)(NSDictionary *buildinParams, NSArray *inputParams, DCHMVVMCommandCompletion completion);
-typedef void(^DCHMVVMCommandCancelation)();
+typedef void(^DCHMVVMCommandOperation)(NSDictionary *buildinParams, NSDictionary *inputParams, id *storeContentPtr, DCHMVVMCommandCompletion completion);
+typedef void(^DCHMVVMCommandCancelation)(id storeContent);
 typedef void(^DCHMVVMCommandExecuteObserver)(DCHMVVMCommand *command, BOOL executing);
 
 @interface DCHMVVMCommand : NSObject
@@ -36,7 +36,7 @@ typedef void(^DCHMVVMCommandExecuteObserver)(DCHMVVMCommand *command, BOOL execu
 - (void)enumerateCallback:(DCHMVVMCommandCallbackQueueEnumeration)enumeration;
 
 - (void)cancel;
-- (void)syncExecute:(NSArray *)inputParams;
-- (void)asyncExecute:(NSArray *)inputParams;
+- (void)syncExecute:(NSDictionary *)inputParams;
+- (void)asyncExecute:(NSDictionary *)inputParams;
 
 @end
