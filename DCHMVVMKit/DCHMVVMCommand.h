@@ -14,7 +14,7 @@
 @class DCHMVVMCommand;
 
 typedef void(^DCHMVVMCommandCompletion)(id content, NSError *error);
-typedef void(^DCHMVVMCommandOperation)(NSDictionary *buildinParams, NSDictionary *inputParams, id *storeContentPtr, DCHMVVMCommandCompletion completion);
+typedef id(^DCHMVVMCommandOperation)(NSDictionary *buildinParams, NSDictionary *inputParams, DCHMVVMCommandCompletion completion);
 typedef void(^DCHMVVMCommandCancelation)(id storeContent);
 typedef void(^DCHMVVMCommandExecuteObserver)(DCHMVVMCommand *command, BOOL executing);
 

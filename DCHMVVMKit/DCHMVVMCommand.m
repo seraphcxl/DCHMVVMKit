@@ -122,9 +122,7 @@
             } synchronous:sync];
             [self updateExecuting:NO];
         };
-        id storeContent = nil;
-        self.operation(self.buildinParams, inputParams, &storeContent, completion);
-        self.storeContent = storeContent;
+        self.storeContent = self.operation(self.buildinParams, inputParams, completion);
     }
 }
 
