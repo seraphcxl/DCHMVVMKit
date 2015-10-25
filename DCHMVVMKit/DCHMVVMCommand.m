@@ -30,6 +30,17 @@
 
 @implementation DCHMVVMCommand
 
+- (void)dealloc {
+    self.callbackQueue = nil;
+    self.executeObserver = nil;
+    self.cancelation = nil;
+    self.operation = nil;
+    
+    self.storeContent = nil;
+    self.result = nil;
+    self.buildinParams = nil;
+}
+
 - (instancetype)initWithOperation:(DCHMVVMCommandOperation)operation {
     return [self initWithOperation:operation callback:nil];
 }
@@ -97,6 +108,7 @@
         self.cancelation(self.storeContent);
     }
     [self updateExecuting:NO];
+    self.storeContent = nil;
 }
 
 - (void)execute:(NSDictionary *)inputParams synchronous:(BOOL)sync {
@@ -121,6 +133,7 @@
                 }
             } synchronous:sync];
             [self updateExecuting:NO];
+            self.storeContent = nil;
         };
         self.storeContent = self.operation(self.buildinParams, inputParams, completion);
     }
